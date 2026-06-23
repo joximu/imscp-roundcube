@@ -113,7 +113,9 @@ EOT
                 'preferred-install'      => 'dist',
                 'process-timeout'        => 5000,
                 'use-include-path'       => JSON::false,
-                'allow-plugins'          => '{"joximu/*": true }'
+                'allow-plugins'          => {
+                    'joximu/*' => JSON::true,
+                },
             },
             'dev',
             JSON::true
