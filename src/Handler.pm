@@ -112,7 +112,8 @@ EOT
                 'classmap-authoritative' => JSON::false,
                 'preferred-install'      => 'dist',
                 'process-timeout'        => 5000,
-                'use-include-path'       => JSON::false
+                'use-include-path'       => JSON::false,
+                'allow-plugins'          => '{"joximu/*": true }'
             },
             'dev',
             JSON::true
