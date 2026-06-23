@@ -1,5 +1,5 @@
 {
-  "name": "imscp/roundcube",
+  "name": "joximu/imscp-roundcube",
   "type": "imscp-tool",
   "license": "LGPL-2.1-only",
   "description": "Provides the Roundcube Webmail client for i-MSCP",
@@ -22,7 +22,7 @@
   },
   "require": {
     "php": "^7.3",
-    "imscp/composer-installers": "^1.0"
+    "joximu/composer-installers": "^1.0"
   },
   "require-dev": {
     "imscp/imscp-coding-standard": "^1.0",
