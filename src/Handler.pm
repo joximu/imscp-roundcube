@@ -78,7 +78,7 @@ sub preinstall
             user                 => $::imscpConfig{'SYSTEM_USER_PREFIX'}
                 . $::imscpConfig{'SYSTEM_USER_MIN_UID'},
             composer_home        => "$CWD/data/persistent/.composer",
-            composer_working_dir => "$CWD/vendor/imscp/roundcube/roundcubemail",
+            composer_working_dir => "$CWD/vendor/joximu/imscp-roundcube/roundcubemail",
             composer_json        => 'composer.json-dist'
         );
 
@@ -121,7 +121,7 @@ EOT
         # We want make use of our own composer plugin for Roundcube plugins
         # installation
         $composer->remove( 'roundcube/plugin-installer' );
-        $composer->require( 'imscp/roundcube-plugin-installer', '^1.0' );
+        $composer->require( 'joximu/imscp-roundcube-plugin-installer', '^1.0' );
 
         # Install Roundcube PHP dependencies 
         $composer->update( TRUE );
@@ -130,7 +130,7 @@ EOT
         my $stderr;
         executeNoWait(
             $self->_getSuCmd(
-                "$CWD/vendor/imscp/roundcube/roundcubemail/bin/install-jsdeps.sh"
+                "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/bin/install-jsdeps.sh"
             ),
             sub {
                 chomp( $_[0] );
@@ -227,7 +227,7 @@ sub postinstall
     }
 
     unless ( symlink( File::Spec->abs2rel(
-        "$CWD/vendor/imscp/roundcube/roundcubemail/public_html",
+        "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/public_html",
         "$CWD/public/tools"
     ),
         "$CWD/public/tools/roundcube"
@@ -326,7 +326,7 @@ sub setGuiPermissions
 {
     local $CWD = $::imscpConfig{'GUI_ROOT_DIR'};
 
-    setRights( "$CWD/vendor/imscp/roundcube/roundcubemail/bin", {
+    setRights( "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/bin", {
         dirmode   => '0755',
         filemode  => '0755',
         recursive => TRUE
@@ -517,7 +517,7 @@ sub _buildConfigFiles
 
         unless ( defined $cfgTpl ) {
             $cfgTpl = iMSCP::File->new(
-                filename => "$CWD/vendor/imscp/roundcube/src/config.inc.php"
+                filename => "$CWD/vendor/joximu/imscp-roundcube/src/config.inc.php"
             )->get();
             return 1 unless defined $cfgTpl;
         }
@@ -525,7 +525,7 @@ sub _buildConfigFiles
         $cfgTpl = process( $data, $cfgTpl );
 
         my $file = iMSCP::File->new(
-            filename => "$CWD/vendor/imscp/roundcube/roundcubemail/config/config.inc.php"
+            filename => "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/config/config.inc.php"
         );
         $file->set( $cfgTpl );
         $rs = $file->save();
@@ -536,10 +536,10 @@ sub _buildConfigFiles
 
         # Cron and logrotate configuration files
         for my $dir ( 'cron.d', 'logrotate.d' ) {
-            next unless -f "$CWD/vendor/imscp/roundcube/src/$dir/imscp_roundcube";
+            next unless -f "$CWD/vendor/joximu/imscp-roundcube/src/$dir/imscp_roundcube";
 
             my $fileC = iMSCP::File->new(
-                filename => "$CWD/vendor/imscp/roundcube/src/$dir/imscp_roundcube"
+                filename => "$CWD/vendor/joximu/imscp-roundcube/src/$dir/imscp_roundcube"
             )->getAsRef();
 
             ${ $fileC } = process(
@@ -582,7 +582,7 @@ sub _buildConfigFiles
 sub _buildHttpdConfigFile
 {
     my $rs = iMSCP::File->new(
-        filename => "$CWD/vendor/imscp/roundcube/src/nginx.conf"
+        filename => "$CWD/vendor/joximu/imscp-roundcube/src/nginx.conf"
     )->copyFile( '/etc/nginx/imscp_roundcube.conf' );
     return $rs if $rs;
 
@@ -695,8 +695,8 @@ sub _setupDatabase
             # Create Roundcube database
             my $rs = execute(
                 $self->_getSuCmd(
-                    "$CWD/vendor/imscp/roundcube/roundcubemail/bin/initdb.sh",
-                    '--dir', "$CWD/vendor/imscp/roundcube/roundcubemail/SQL",
+                    "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/bin/initdb.sh",
+                    '--dir', "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/SQL",
                     '--package', 'roundcube'
                 ),
                 \my $stdout,
@@ -710,8 +710,8 @@ sub _setupDatabase
         # Update Roundcube database
         my $rs = execute(
             $self->_getSuCmd(
-                "$CWD/vendor/imscp/roundcube/roundcubemail/bin/updatedb.sh",
-                '--dir', "$CWD/vendor/imscp/roundcube/roundcubemail/SQL",
+                "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/bin/updatedb.sh",
+                '--dir', "$CWD/vendor/joximu/imscp-roundcube/roundcubemail/SQL",
                 '--package', 'roundcube'
             ),
             \my $stdout,
