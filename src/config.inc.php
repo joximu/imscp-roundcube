@@ -65,3 +65,4 @@ $config['use_secure_urls'] = true;
 $config['create_default_folders'] = true;
 $config['quota_zero_as_unlimited'] = true;
 $config['enable_spellcheck'] = true;
+$config['log_file_ext'] = '.log';
